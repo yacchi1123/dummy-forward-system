@@ -77,10 +77,6 @@ export default function LoginPage() {
           </div>
         </form>
         
-        <div className="mt-4 text-center text-xs text-gray-500">
-          <p>テスト用ログイン情報:</p>
-          <p>ID: test / パスワード: password</p>
-        </div>
       </div>
     </div>
   )
