@@ -56,21 +56,35 @@ export default function NewExpensePage() {
       return
     }
 
-    const newExpense: Expense = {
-      id: Date.now().toString(),
-      date,
-      category,
-      payee,
-      amount: parseFloat(amount),
-      description
+    try {
+      const newExpense: Expense = {
+        id: Date.now().toString(),
+        date,
+        category,
+        payee,
+        amount: parseFloat(amount),
+        description
+      }
+
+      const existingExpenses = JSON.parse(localStorage.getItem('expenses') || '[]')
+      const updatedExpenses = [...existingExpenses, newExpense]
+      localStorage.setItem('expenses', JSON.stringify(updatedExpenses))
+
+      // Use confirm instead of alert for better compatibility
+      if (window.confirm('経費を登録しました。一覧画面に戻りますか？')) {
+        router.push('/expenses')
+      } else {
+        // Reset form
+        setDate(new Date().toISOString().split('T')[0])
+        setCategory('')
+        setPayee('')
+        setAmount('')
+        setDescription('')
+      }
+    } catch (error) {
+      console.error('Error saving expense:', error)
+      alert('保存中にエラーが発生しました。もう一度お試しください。')
     }
-
-    const existingExpenses = JSON.parse(localStorage.getItem('expenses') || '[]')
-    const updatedExpenses = [...existingExpenses, newExpense]
-    localStorage.setItem('expenses', JSON.stringify(updatedExpenses))
-
-    alert('経費を登録しました')
-    router.push('/expenses')
   }
 
   const handleLogout = () => {
